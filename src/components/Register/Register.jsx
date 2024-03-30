@@ -19,7 +19,10 @@ const Register = () => {
       setError('atleaset create 6 digit password')
       return
     }
-
+    else if (!/[A-Z]/.test(password)) {
+      setError('atleast one letter should be capital')
+      return
+    }
     // create a user
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
