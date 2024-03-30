@@ -1,7 +1,10 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
+import { useState } from "react";
 
 const Register = () => {
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -9,15 +12,24 @@ const Register = () => {
     const email = e.target.email.value
     const password = e.target.password.value;
     // console.log(password, email);
+    setError('')
+    setSuccess('')
+
+    if (password.length < 6) {
+      setError('atleaset create 6 digit password')
+      return
+    }
 
     // create a user
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
         const seeResult = result.user
         console.log(seeResult);
+        setSuccess('succesfully created !')
       })
       .catch(error => {
         console.log(error);
+        setError(error.message)
       })
   }
 
@@ -35,14 +47,14 @@ const Register = () => {
           <div className="space-y-4">
             <div>
               <label className="block mb-2 text-sm">Email address</label>
-              <input type="email" name="email" id="email" placeholder="leroy@jenkins.com" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" />
+              <input type="email" name="email" id="email" placeholder="leroy@jenkins.com" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" required />
             </div>
             <div>
               <div className="flex justify-between mb-2">
                 <label className="text-sm">Password</label>
                 <a rel="noopener noreferrer" href="#" className="text-xs hover:underline dark:text-gray-600">Forgot password?</a>
               </div>
-              <input type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" />
+              <input type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" required />
             </div>
           </div>
           <div className="space-y-2">
@@ -55,6 +67,11 @@ const Register = () => {
             </p>
           </div>
         </form>
+        {
+          error ? <p className="text-red-500">{error}</p> :
+            success && <p className="text-2xl text-green-500">{success}</p>
+        }
+
       </div >
     </div >
   );
