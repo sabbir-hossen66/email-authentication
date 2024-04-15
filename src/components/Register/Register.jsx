@@ -1,10 +1,12 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../firebase/firebase.config";
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -56,8 +58,19 @@ const Register = () => {
               <div className="flex justify-between mb-2">
                 <label className="text-sm">Password</label>
                 <a rel="noopener noreferrer" href="#" className="text-xs hover:underline dark:text-gray-600">Forgot password?</a>
+                <button onClick={() => setShowPassword(!showPassword)}>
+                  {
+                    showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>
+                  }
+                </button>
               </div>
-              <input type="password" name="password" id="password" placeholder="*****" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" required />
+              <input
+                type={showPassword ? 'text' : "password"}
+                name="password"
+                id="password"
+                placeholder="*****"
+                className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" required />
+
             </div>
           </div>
           <div className="space-y-2">
